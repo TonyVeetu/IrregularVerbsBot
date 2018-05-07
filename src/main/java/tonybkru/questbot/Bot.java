@@ -47,11 +47,11 @@ public class Bot extends TelegramLongPollingBot {
     public static final String OPEN_MAIN = "OM";
     public static final String GET_ANSWER = "GA";
 
-    public static final String smiling_face_with_heart_eyes = new String(Character.toChars(0x1F60D));
-    public static final String winking_face_with_tongue = new String(Character.toChars(0x1F61C));
+    //public static final String smiling_face_with_heart_eyes = new String(Character.toChars(0x1F60D));
+    //public static final String winking_face_with_tongue = new String(Character.toChars(0x1F61C));
     public static final String winking_face = new String(Character.toChars(0x1F609));
-    public static final String bouquet = new String(Character.toChars(0x1F490));
-    public static final String party_popper = new String(Character.toChars(0x1F389));
+    //public static final String bouquet = new String(Character.toChars(0x1F490));
+    //public static final String party_popper = new String(Character.toChars(0x1F389));
 
     private DocumentMarshaller marshaller;
     private QuestStateHolder questStateHolder;
@@ -122,15 +122,14 @@ public class Bot extends TelegramLongPollingBot {
         String text = update.getMessage().getText();
         if ("/start".equalsIgnoreCase(text)) {
             answerMessage = new SendMessage();
-            answerMessage.setText("<b>Привет, красотка!" + smiling_face_with_heart_eyes
-                    + "\nВо-первых с днем рождения!" + bouquet + bouquet + bouquet + party_popper
-                    + " А во-вторых, ты готова поиграть в увлекательную викторину?</b>"
-            );
+            answerMessage.setText("<b>Привет! Все неправильные глаголы разбиты на группы! Введи номер группы, с которй ты хочешь начать!<b>");
             answerMessage.setParseMode("HTML");
             answerMessage.setChatId(update.getMessage().getChatId());
+            //TODO вернуть кнопки 1, 2, 3 ... соответствующие группе глаголов!!
             InlineKeyboardMarkup markup = keyboard(update);
-
             answerMessage.setReplyMarkup(markup);
+
+
         }
         return answerMessage;
     }
@@ -196,21 +195,39 @@ public class Bot extends TelegramLongPollingBot {
 
                 sendQuest(update);
             }
+//
+//            if (GET_ANSWER.equals(action.getName())) {
+//                Long answId = Long.parseLong(action.getValue());
+//                ClsAnswer answ = classifierRepository.find(ClsAnswer.class, answId);
+//                SendMessage comment = new SendMessage();
+//                comment.setParseMode("HTML");
+//                comment.setText("<b>Твой ответ:</b> "
+//                        + answ.getAnswerText()
+//                        + "\n<b>Комментарий к ответу:</b> "
+//                        + answ.getAnswerComment()
+//                        + "\n");
+//                comment.setChatId(chatId);
+//                execute(comment);
+//
+//                sendQuest(update);
+//            }
 
-            if (GET_ANSWER.equals(action.getName())) {
-                Long answId = Long.parseLong(action.getValue());
-                ClsAnswer answ = classifierRepository.find(ClsAnswer.class, answId);
-                SendMessage comment = new SendMessage();
-                comment.setParseMode("HTML");
-                comment.setText("<b>Твой ответ:</b> "
-                        + answ.getAnswerText()
-                        + "\n<b>Комментарий к ответу:</b> "
-                        + answ.getAnswerComment()
-                        + "\n");
-                comment.setChatId(chatId);
-                execute(comment);
+            if ("1".equals(action.getName())) {
 
-                sendQuest(update);
+            } else if ("2".equals(action.getName())) {
+
+            } else if ("3".equals(action.getName())) {
+
+            } else if ("4".equals(action.getName())) {
+
+            } else if ("5".equals(action.getName())) {
+
+            } else if ("6".equals(action.getName())) {
+
+            } else if ("7".equals(action.getName())) {
+
+            } else {
+
             }
 
         } catch (Exception ex) {
@@ -231,16 +248,22 @@ public class Bot extends TelegramLongPollingBot {
     public InlineKeyboardMarkup keyboard(Update update) {
         final InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-        keyboard.add(Arrays.asList(buttonMain()));
+        //keyboard.add(Arrays.asList(buttonMain()));
+        keyboard.add(Arrays.asList(makeButton("1")));
+        keyboard.add(Arrays.asList(makeButton("2")));
+        keyboard.add(Arrays.asList(makeButton("3")));
+        keyboard.add(Arrays.asList(makeButton("4")));
+        keyboard.add(Arrays.asList(makeButton("5")));
+
         markup.setKeyboard(keyboard);
         return markup;
     }
 
-    public InlineKeyboardButton buttonMain() {
+    public InlineKeyboardButton makeButton(String name) {
         InlineKeyboardButton button = new InlineKeyboardButtonBuilder()
-                .setText("Начать!" + winking_face)
+                .setText(name)
                 .setCallbackData(new ActionBuilder(marshaller)
-                        .setName(OPEN_MAIN)
+                        .setName(name)
                         .asString())
                 .build();
         return button;

@@ -121,16 +121,16 @@ public class AppEnv {
     public void init() {
         initProperties(null);
 
-        String db = "db";
-        String dbUrl = "jdbc:h2:" + getRootPath() + File.separator + db + File.separator + "QUEB;AUTO_SERVER=TRUE"; //<property name=\"javax.persistence.jdbc.url\" value=\
-        Map hm = new HashMap();
-        hm.put("javax.persistence.jdbc.url", dbUrl);
+        //String db = "db";
+        //String dbUrl = "jdbc:h2:" + getRootPath() + File.separator + db + File.separator + "QUEB;AUTO_SERVER=TRUE"; //<property name=\"javax.persistence.jdbc.url\" value=\
+        //Map hm = new HashMap();
+        //hm.put("javax.persistence.jdbc.url", dbUrl);
 
-        QueriesEngine dao = QueriesEngine.instance("QUE", hm);
+        //QueriesEngine dao = QueriesEngine.instance("QUE", hm);
 
-        ((ClassifierRepositoryImpl) getClassifierRepository()).setDAO(dao);
+        //((ClassifierRepositoryImpl) getClassifierRepository()).setDAO(dao);
 
-        initManagers();
+        //initManagers();
     }
 
     public static AppEnv getContext(String propFileName) { //https://habrahabr.ru/post/129494/

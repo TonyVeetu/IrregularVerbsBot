@@ -43,6 +43,7 @@ public class Main {
             Bot bot = null;
             HttpHost proxy = AppEnv.getContext().getProxy();
             if (proxy == null) {
+                System.out.println("_______________TONYYYYYYYYYYY_____________");
                 bot = new Bot();
             } else {
                 DefaultBotOptions instance = ApiContext
@@ -72,6 +73,7 @@ public class Main {
             try {
                 Thread.sleep(80000L);
             } catch (InterruptedException ex) {
+                System.out.println("++++TTTTT++++");
                 Logger.getLogger(Main.class.getName())
                         .log(Level.SEVERE, null, ex);
             }

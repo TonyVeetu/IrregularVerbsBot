@@ -21,6 +21,7 @@ import tonybkru.questbot.bot.state.QuestStateHolder;
 import tonybkru.questbot.model.ClsAnswer;
 import tonybkru.questbot.model.ClsQuest;
 import tonybkru.questbot.model.ClsQuestPhoto;
+import tonybkru.questbot.model.GroupsOfWord;
 import tonybkru.questbot.model.repository.ClassifierRepository;
 import tonybkru.questbot.model.repository.ClassifierRepositoryImpl;
 import tonybkru.questbot.util.ActionBuilder;
@@ -42,10 +43,16 @@ import java.util.logging.Logger;
 public class Bot extends TelegramLongPollingBot {
 
     public static String TOKEN = "592370184:AAGm6YSKvZhqQCxdQBTf7a73pUQDXsWj0cE";
-    public static String USERNAME = "@irregulartonybot";
+    public static String USERNAME = "IrregularVerbs";
 
-    public static final String OPEN_MAIN = "OM";
-    public static final String GET_ANSWER = "GA";
+    //public static final String OPEN_MAIN = "OM";
+    //public static final String GET_ANSWER = "GA";
+
+    public static final String ONE = "1";
+    public static final String TWO = "2";
+    public static final String THREE = "3";
+    public static final String FOUR = "4";
+    public static final String FIVE = "5";
 
     //public static final String smiling_face_with_heart_eyes = new String(Character.toChars(0x1F60D));
     //public static final String winking_face_with_tongue = new String(Character.toChars(0x1F61C));
@@ -128,8 +135,6 @@ public class Bot extends TelegramLongPollingBot {
             //TODO вернуть кнопки 1, 2, 3 ... соответствующие группе глаголов!!
             InlineKeyboardMarkup markup = keyboard(update);
             answerMessage.setReplyMarkup(markup);
-
-
         }
         return answerMessage;
     }
@@ -157,7 +162,7 @@ public class Bot extends TelegramLongPollingBot {
             answers.setParseMode("HTML");
             answers.setText("<b>Варианты ответа:</b>");
             answers.setChatId(chatId);
-            answers.setReplyMarkup(keyboardAnswer(update, nextQuest));
+            //answers.setReplyMarkup(keyboardAnswer(update, nextQuest));
             execute(answers);
         } else {
             SendMessage answers = new SendMessage();
@@ -180,6 +185,29 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
 
+    private void sendGroup(Update update, String groupName) throws TelegramApiException {
+        Long chatId = UpdateUtil.getChatFromUpdate(update).getId();
+        GroupsOfWord groups = new GroupsOfWord();
+        Object[] group = groups.getGroup(groupName);
+        if(groupName != null && group != null) {
+
+            SendMessage message = new SendMessage();
+            message.setParseMode("HTML");
+            message.setText("<b>Вопрос " + groupName + ":</b>  "
+                    + group.toString());
+            message.setChatId(chatId);
+            execute(message);
+            //todo send Foto!!!
+
+            SendMessage answers = new SendMessage();
+            answers.setParseMode("HTML");
+            answers.setText("<b>Варианты ответа:</b>");
+            answers.setChatId(chatId);
+            answers.setReplyMarkup(keyboard(update));
+            execute(answers);
+        }
+    }
+
     public List<SendMessage> _processCallbackQuery(Update update) {
         List<SendMessage> answerMessages = new ArrayList<>();
         try {
@@ -189,13 +217,11 @@ public class Bot extends TelegramLongPollingBot {
             if (data == null || action == null) {
                 return null;
             }
-
-            if (OPEN_MAIN.equals(action.getName())) {
-                initQuests(update);
-
-                sendQuest(update);
-            }
+//            if (OPEN_MAIN.equals(action.getName())) {
+//                initQuests(update);
 //
+//                sendQuest(update);
+//            }
 //            if (GET_ANSWER.equals(action.getName())) {
 //                Long answId = Long.parseLong(action.getValue());
 //                ClsAnswer answ = classifierRepository.find(ClsAnswer.class, answId);
@@ -211,24 +237,7 @@ public class Bot extends TelegramLongPollingBot {
 //
 //                sendQuest(update);
 //            }
-
-            if ("1".equals(action.getName())) {
-
-            } else if ("2".equals(action.getName())) {
-
-            } else if ("3".equals(action.getName())) {
-
-            } else if ("4".equals(action.getName())) {
-
-            } else if ("5".equals(action.getName())) {
-
-            } else if ("6".equals(action.getName())) {
-
-            } else if ("7".equals(action.getName())) {
-
-            } else {
-
-            }
+            sendGroup(update, action.getName());
 
         } catch (Exception ex) {
             Logger.getLogger(Bot.class.getName()).log(Level.SEVERE, null, ex);
@@ -248,13 +257,11 @@ public class Bot extends TelegramLongPollingBot {
     public InlineKeyboardMarkup keyboard(Update update) {
         final InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-        //keyboard.add(Arrays.asList(buttonMain()));
-        keyboard.add(Arrays.asList(makeButton("1")));
-        keyboard.add(Arrays.asList(makeButton("2")));
-        keyboard.add(Arrays.asList(makeButton("3")));
-        keyboard.add(Arrays.asList(makeButton("4")));
-        keyboard.add(Arrays.asList(makeButton("5")));
-
+        keyboard.add(Arrays.asList(makeButton(ONE)));
+        keyboard.add(Arrays.asList(makeButton(TWO)));
+        keyboard.add(Arrays.asList(makeButton(THREE)));
+        keyboard.add(Arrays.asList(makeButton(FOUR)));
+        keyboard.add(Arrays.asList(makeButton(FIVE)));
         markup.setKeyboard(keyboard);
         return markup;
     }
@@ -269,26 +276,27 @@ public class Bot extends TelegramLongPollingBot {
         return button;
     }
 
-    public InlineKeyboardMarkup keyboardAnswer(Update update, ClsQuest quest) {
-        final InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
-        for (ClsAnswer clsAnswer : quest.getClsAnswerCollection()) {
-            keyboard.add(Arrays.asList(buttonAnswer(clsAnswer)));
-        }
-        markup.setKeyboard(keyboard);
-        return markup;
-    }
+//    public InlineKeyboardMarkup keyboardAnswer(Update update, ClsQuest quest) {
+//        final InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+//        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+//        for (ClsAnswer clsAnswer : quest.getClsAnswerCollection()) {
+//            keyboard.add(Arrays.asList(buttonAnswer(clsAnswer)));
+//        }
+//        markup.setKeyboard(keyboard);
+//        return markup;
+//    }
 
-    public InlineKeyboardButton buttonAnswer(ClsAnswer clsAnswer) {
-        InlineKeyboardButton button = new InlineKeyboardButtonBuilder()
-                .setText(clsAnswer.getAnswerText())
-                .setCallbackData(new ActionBuilder(marshaller)
-                        .setName(GET_ANSWER)
-                        .setValue(clsAnswer.getId().toString())
-                        .asString())
-                .build();
-        return button;
-    }
+
+//    public InlineKeyboardButton buttonAnswer(ClsAnswer clsAnswer) {
+//        InlineKeyboardButton button = new InlineKeyboardButtonBuilder()
+//                .setText(clsAnswer.getAnswerText())
+//                .setCallbackData(new ActionBuilder(marshaller)
+//                        .setName(GET_ANSWER)
+//                        .setValue(clsAnswer.getId().toString())
+//                        .asString())
+//                .build();
+//        return button;
+//    }
 
     public void setMarshaller(DocumentMarshaller marshalFactory) {
         this.marshaller = marshalFactory;

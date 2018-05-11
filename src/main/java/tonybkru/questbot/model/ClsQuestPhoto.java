@@ -5,7 +5,7 @@
  */
 package tonybkru.questbot.model;
 
-import ru.p03.classifier.model.Classifier;
+import tonybkru.classifier.model.Classifier;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;

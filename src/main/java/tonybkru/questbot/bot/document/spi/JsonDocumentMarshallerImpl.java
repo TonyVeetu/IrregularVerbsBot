@@ -2,7 +2,6 @@ package tonybkru.questbot.bot.document.spi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -77,7 +76,7 @@ public class JsonDocumentMarshallerImpl implements DocumentMarshaller {
 
     @Override
     public <T> T unmarshal(String xml, Class clazz) {
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper  objectMapper = new ObjectMapper();
         T s = null;
         try {
             s = (T) objectMapper.readValue(xml, clazz);

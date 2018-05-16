@@ -42,8 +42,8 @@ import java.util.logging.Logger;
  */
 public class Bot extends TelegramLongPollingBot {
 
-    public static String TOKEN = "592370184:AAGm6YSKvZhqQCxdQBTf7a73pUQDXsWj0cE";
-    public static String USERNAME = "irregulartonybot";
+    public static String TOKEN =
+    public static String USERNAME = "@irregulartonybot";
 
     //public static final String OPEN_MAIN = "OM";
     //public static final String GET_ANSWER = "GA";

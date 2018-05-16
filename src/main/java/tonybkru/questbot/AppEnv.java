@@ -30,9 +30,9 @@ import java.util.logging.Logger;
 public class AppEnv {
 
     public static String ROOT_PATH = "ROOT_PATH";
-    public static String PROXY_HOST = "PROXY_HOST";
-    public static String PROXY_PORT = "PROXY_PORT";
-    public static String PROXY_USE = "PROXY_USE";
+    public static String PROXY_HOST = "138.201.6.102";
+    public static String PROXY_PORT = "1080";
+    public static String PROXY_USE = "";
     public static String SERVICE_FILE = "SERVICE_FILE";
     public static String EMPLOYEE_FILE = "EMPLOYEE_FILE";
 

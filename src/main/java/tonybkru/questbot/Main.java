@@ -30,54 +30,54 @@ public class Main {
 
         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Бот. Начало работы");
 
-        if (args.length > 0) {
-            AppEnv.getContext(args[0].replaceFirst("-", ""));//.init(args[0]);
-        } else {
-            AppEnv.getContext();//.init();
-        }
+//        if (args.length > 0) {
+//            AppEnv.getContext(args[0].replaceFirst("-", ""));//.init(args[0]);
+//        } else {
+//            AppEnv.getContext();//.init();
+//        }
+//
+//        ApiContextInitializer.init();
+//        TelegramBotsApi botsApi = new TelegramBotsApi();
 
-        ApiContextInitializer.init();
-        TelegramBotsApi botsApi = new TelegramBotsApi();
+//        Runnable r = () -> {
+//            Bot bot = null;
+//            HttpHost proxy = AppEnv.getContext().getProxy();
+//            if (proxy == null) {
+//                System.out.println("_______________TONYYYYYYYYYYY_____________");
+//                bot = new Bot();
+//            } else {
+//                DefaultBotOptions instance = ApiContext
+//                        .getInstance(DefaultBotOptions.class);
+//                RequestConfig rc = RequestConfig.custom()
+//                        .setProxy(proxy).build();
+//                instance.setRequestConfig(rc);
+//                bot = new Bot(instance);
+//            }
+//
+//            try {
+//                botsApi.registerBot(bot);
+//                bot.setClassifierRepository(AppEnv.getContext().getClassifierRepository());
+//                bot.setMarshaller(AppEnv.getContext().getMarschaller());
+//                bot.setQuestStateHolder(AppEnv.getContext().getQuestStateHolder());
+//                //AppEnv.getContext().getMenuManager().setBot(bot);
+//            } catch (TelegramApiRequestException ex) {
+//                Logger.getLogger(Main.class.getName())
+//                        .log(Level.SEVERE, null, ex);
+//            }
+//        };
 
-        Runnable r = () -> {
-            Bot bot = null;
-            HttpHost proxy = AppEnv.getContext().getProxy();
-            if (proxy == null) {
-                System.out.println("_______________TONYYYYYYYYYYY_____________");
-                bot = new Bot();
-            } else {
-                DefaultBotOptions instance = ApiContext
-                        .getInstance(DefaultBotOptions.class);
-                RequestConfig rc = RequestConfig.custom()
-                        .setProxy(proxy).build();
-                instance.setRequestConfig(rc);
-                bot = new Bot(instance);
-            }
-
-            try {
-                botsApi.registerBot(bot);
-                bot.setClassifierRepository(AppEnv.getContext().getClassifierRepository());
-                bot.setMarshaller(AppEnv.getContext().getMarschaller());
-                bot.setQuestStateHolder(AppEnv.getContext().getQuestStateHolder());
-                //AppEnv.getContext().getMenuManager().setBot(bot);
-            } catch (TelegramApiRequestException ex) {
-                Logger.getLogger(Main.class.getName())
-                        .log(Level.SEVERE, null, ex);
-            }
-        };
-
-        new Thread(r).start();
-
-        while (true) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "bot!");
-            try {
-                Thread.sleep(80000L);
-            } catch (InterruptedException ex) {
-                System.out.println("++++TTTTT++++");
-                Logger.getLogger(Main.class.getName())
-                        .log(Level.SEVERE, null, ex);
-            }
-        }
+//        new Thread(r).start();
+//
+//        while (true) {
+//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "bot!");
+//            try {
+//                Thread.sleep(80000L);
+//            } catch (InterruptedException ex) {
+//                System.out.println("++++TTTTT++++");
+//                Logger.getLogger(Main.class.getName())
+//                        .log(Level.SEVERE, null, ex);
+//            }
+//        }
 
     }
 }

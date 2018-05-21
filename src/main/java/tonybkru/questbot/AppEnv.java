@@ -30,9 +30,14 @@ import java.util.logging.Logger;
 public class AppEnv {
 
     public static String ROOT_PATH = "ROOT_PATH";
-    public static String PROXY_HOST = "PROXY_HOST";
-    public static String PROXY_PORT = "PROXY_PORT";
-    public static String PROXY_USE = "PROXY_USE";
+    public static String PROXY_HOST = "213.159.122.12";
+    public static Integer PROXY_PORT = 8080;
+    public static String PROXY_USER = "kp";
+    public static String PROXY_PASSWORD = "myPas123";
+
+    public static String PROXY_HOST1 = "128.140.175.97";
+    public static Integer PROXY_PORT1 = 443;
+
     public static String SERVICE_FILE = "SERVICE_FILE";
     public static String EMPLOYEE_FILE = "EMPLOYEE_FILE";
 
@@ -61,46 +66,46 @@ public class AppEnv {
 
     private Properties initProperties(String propFileName) {
         Properties properties = null;
-        File fProp = null;
-        String propDir = null;
-        if (propFileName == null) {
-            propFileName = "conf.properties";
-            propDir = "conf";
-
-            fProp = new File(propDir + File.separator + propFileName);
-        } else {
-            fProp = new File(propFileName);
-        }
-
-        if (!fProp.exists()) {
-            Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, "not exists: " + fProp.getAbsolutePath());
-            fProp = new File(".." + "/" + propDir + "/" + propFileName);
-            if (!fProp.exists()) {
-                Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, "not exists: " + fProp.getAbsolutePath());
-                fProp = new File("...." + "/" + propDir + "/" + propFileName);
-                if (!fProp.exists()) {
-                    Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, "not exists: " + fProp.getAbsolutePath());
-                    fProp = new File(propFileName);
-                    Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, "default: " + fProp.getAbsolutePath());
-                }
-            }
-        }
-        if (fProp.exists()) {
-            try (InputStream fis = new FileInputStream(fProp);) {
-                properties = new Properties();
-                properties.load(new InputStreamReader(fis, Charset.forName("UTF-8")));
-                for (Map.Entry<Object, Object> entry : properties.entrySet()) {
-                    Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, entry.getKey() + " = " + entry.getValue());
-                }
-                environments.putAll(properties);
-                Bot.TOKEN = properties.getProperty("TOKEN");
-                Bot.USERNAME = properties.getProperty("USERNAME");
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+//        File fProp = null;
+//        String propDir = null;
+//        if (propFileName == null) {
+//            propFileName = "conf.properties";
+//            propDir = "conf";
+//
+//            fProp = new File(propDir + File.separator + propFileName);
+//        } else {
+//            fProp = new File(propFileName);
+//        }
+//
+//        if (!fProp.exists()) {
+//            Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, "not exists: " + fProp.getAbsolutePath());
+//            fProp = new File(".." + "/" + propDir + "/" + propFileName);
+//            if (!fProp.exists()) {
+//                Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, "not exists: " + fProp.getAbsolutePath());
+//                fProp = new File("...." + "/" + propDir + "/" + propFileName);
+//                if (!fProp.exists()) {
+//                    Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, "not exists: " + fProp.getAbsolutePath());
+//                    fProp = new File(propFileName);
+//                    Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, "default: " + fProp.getAbsolutePath());
+//                }
+//            }
+//        }
+//        if (fProp.exists()) {
+//            try (InputStream fis = new FileInputStream(fProp);) {
+//                properties = new Properties();
+//                properties.load(new InputStreamReader(fis, Charset.forName("UTF-8")));
+//                for (Map.Entry<Object, Object> entry : properties.entrySet()) {
+//                    Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, entry.getKey() + " = " + entry.getValue());
+//                }
+//                environments.putAll(properties);
+//                Bot.TOKEN = properties.getProperty("TOKEN");
+//                Bot.NAME = properties.getProperty("USERNAME");
+//            } catch (FileNotFoundException ex) {
+//                Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, null, ex);
+//            } catch (IOException ex) {
+//                Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+//        }
         return properties;
     }
 
@@ -154,15 +159,15 @@ public class AppEnv {
     }
 
     public HttpHost getProxy() {
-        if (environments.get(PROXY_HOST) != null && environments.get(PROXY_PORT) != null
-                && environments.get(PROXY_USE) != null && "true".equalsIgnoreCase((String) environments.get(PROXY_USE))) {
+        //if (environments.get(PROXY_HOST) != null && environments.get(PROXY_PORT) != null
+        //        && environments.get(PROXY_USE) != null && "true".equalsIgnoreCase((String) environments.get(PROXY_USE))) {
             try {
-                HttpHost proxy = new HttpHost((String) environments.get(PROXY_HOST), Integer.valueOf((String) environments.get(PROXY_PORT)));
+                HttpHost proxy = new HttpHost(PROXY_HOST, PROXY_PORT);
                 return proxy;
             } catch (NumberFormatException ex) {
                 Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+        //}
         return null;
     }
 

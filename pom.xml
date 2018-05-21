@@ -27,14 +27,8 @@
 
     <dependency>
       <groupId>org.telegram</groupId>
-      <artifactId>telegrambots</artifactId>
+      <artifactId>telegrambots-abilities</artifactId>
       <version>3.6.1</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>com.github.rubenlagus</groupId>
-      <artifactId>TelegramBots</artifactId>
-      <version>3.6</version>
     </dependency>
 
     <dependency>

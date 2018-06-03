@@ -6,12 +6,14 @@
 package tonybkru.questbot;
 
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import netscape.javascript.JSObject;
 import org.apache.http.HttpHost;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.json.JSONObject;
 import org.telegram.abilitybots.api.bot.AbilityBot;
 import org.telegram.abilitybots.api.objects.Ability;
 import org.telegram.telegrambots.ApiContext;
@@ -20,9 +22,14 @@ import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.api.methods.send.SendSticker;
+import org.telegram.telegrambots.api.objects.Message;
 import org.telegram.telegrambots.api.objects.Update;
+import org.telegram.telegrambots.api.objects.User;
 import org.telegram.telegrambots.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardButton;
+import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
@@ -33,6 +40,7 @@ import tonybkru.questbot.bot.state.QuestStateHolder;
 import tonybkru.questbot.model.ClsQuest;
 import tonybkru.questbot.model.ClsQuestPhoto;
 import tonybkru.questbot.model.GroupsOfWord;
+import tonybkru.questbot.model.IrregularLine;
 import tonybkru.questbot.model.repository.ClassifierRepository;
 import tonybkru.questbot.model.repository.ClassifierRepositoryImpl;
 import tonybkru.questbot.util.ActionBuilder;
@@ -55,10 +63,10 @@ import static tonybkru.questbot.AppEnv.*;
  *
  * @author timofeevan
  */
-public class MyBot extends AbilityBot  /**TelegramLongPollingBot*/ {
+public class MyBot extends TelegramLongPollingBot {
 
-    public static String TOKEN = "505037994:AAF4rgVh5mD_L5lWY-Oxh5IHkt*******";
-    public static String NAME = "tonyveetu_bot";
+    public static String TOKEN = "****number**:AAGm6YSKvZhqQCxdQBTf7a73pUQDXsWj0cE";
+    public static String NAME = "irregulartonybot";
 
     //public static final String OPEN_MAIN = "OM";
     //public static final String GET_ANSWER = "GA";
@@ -79,48 +87,37 @@ public class MyBot extends AbilityBot  /**TelegramLongPollingBot*/ {
     private QuestStateHolder questStateHolder;
     private ClassifierRepositoryImpl classifierRepository;
 
-    //public Bot() {
-    //}
-
-    public MyBot(String token, String name, DefaultBotOptions options) {
-        super(token, name, options);
+    public MyBot() {
     }
+
+    public MyBot(DefaultBotOptions options) {
+        super(options);
+    }
+
+
     @Override
-    public int creatorId() {
-        return 0;
+    public String getBotToken() {
+        return TOKEN;
     }
 
-    public Ability hello() {
-        return Ability.builder()
-                .name("test")
-                .info("hello bot")
-                .locality(ALL)
-                .privacy(PUBLIC)
-                .action(ctx -> silent.send("hello!", ctx.chatId()))
-                .build();
+    @Override
+    public String getBotUsername() {
+        return NAME;
     }
 
-//    @Override
-//    public String getBotToken() {
-//        return TOKEN;
-//    }
-
-//    @Override
-//    public String getBotUsername() {
-//        return NAME;
-//    }
-//
-//    @Override
-//    public void onUpdateReceived(Update update) {
-//        if (update.hasMessage() && update.getMessage().hasText()) {
-//            processCommand(update);
-//        } else if (update.hasCallbackQuery()) {
-//            processCallbackQuery(update);
-//        } else if (update.hasInlineQuery()) {
-//        }
-//    }
+    @Override
+    public void onUpdateReceived(Update update) {
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            processCommand(update);
+        } else if (update.hasCallbackQuery()) {
+            processCallbackQuery(update);//TODO don't understand!!
+        } else if (update.hasInlineQuery()) {
+            //processCallbackQuery(update);
+        }
+    }
 
     private void processCallbackQuery(Update update) {
+        System.out.println("TONY im in processCallbackQuery!!!!!");
         List<SendMessage> answerMessage = null;
         String data = update.getCallbackQuery().getData();
         if (data == null) {
@@ -156,14 +153,45 @@ public class MyBot extends AbilityBot  /**TelegramLongPollingBot*/ {
     public SendMessage _processCommand(Update update) {
         SendMessage answerMessage = null;
         String text = update.getMessage().getText();
-        if ("/start".equalsIgnoreCase(text)) {
+        System.out.println("Tony catch this:___  "+text);
+        if ("/start".equals(text)) {
             answerMessage = new SendMessage();
-            answerMessage.setText("<b>Привет! Все неправильные глаголы разбиты на группы! Введи номер группы, с которй ты хочешь начать!<b>");
-            answerMessage.setParseMode("HTML");
-            answerMessage.setChatId(update.getMessage().getChatId());
-            //TODO вернуть кнопки 1, 2, 3 ... соответствующие группе глаголов!!
+            //answerMessage.setText("*Title:* Алёнка, твой курс будет ЛУЧШИМ на всём белом свете!! Но не сразу!!!\n");
+            Message messege = update.getMessage();
+            User user = messege.getFrom();
+            answerMessage.setText("Привет, "+ user.getUserName()+"! Все неправильные глаголы разбиты на группы! Введи номер группы, с которой ты хочешь начать!");
+            //answerMessage.setParseMode("HTML");
+            answerMessage.setChatId(update.getMessage().getChatId());//TODO вернуть кнопки 1, 2, 3 ... соответствующие группе глаголов!!
+
+            //TODO make another
             InlineKeyboardMarkup markup = keyboard(update);
             answerMessage.setReplyMarkup(markup);
+
+        } else if("/see".equals(text)) {
+            System.out.println("In see part!!!!!");
+//            SendPhoto msg = new SendPhoto()
+//                    .setChatId(update.getMessage().getChatId())
+//                    .setPhoto("http://aftamat4ik.ru/wp-content/uploads/2017/05/14277366494961.jpg")
+//                    .setCaption("Beauty");
+//            try {
+//                sendPhoto(msg);
+//            } catch (TelegramApiException e) {
+//                e.printStackTrace();
+//            }
+            answerMessage = new SendMessage();
+            answerMessage.setChatId(update.getMessage().getChatId());
+
+            ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();// Create the keyboard (list of keyboard rows)
+            keyboardMarkup.setResizeKeyboard(true);
+            List keyboard = new ArrayList<>();// Create a keyboard row
+            KeyboardRow row = new KeyboardRow();// Set each button, you can also use KeyboardButton objects if you need something else than text
+            row.add("balances");
+            row.add("orders");
+            keyboard.add(row);
+            keyboardMarkup.setKeyboard(keyboard);
+            answerMessage.setReplyMarkup(keyboardMarkup);// Add it to the message
+        } else {
+
         }
         return answerMessage;
     }
@@ -214,36 +242,46 @@ public class MyBot extends AbilityBot  /**TelegramLongPollingBot*/ {
         }
     }
 
-    private void sendGroup(Update update, String groupName) throws TelegramApiException {
+    private void sendGroup(Update update, String data) throws TelegramApiException {
+
+        JSONObject json = new JSONObject(data);
+        String groupName = (String) json.get("name");
+        System.out.println("Im in sendGroup! groupName = "+ groupName);
+
         Long chatId = UpdateUtil.getChatFromUpdate(update).getId();
         GroupsOfWord groups = new GroupsOfWord();
-        Object[] group = groups.getGroup(groupName);
-        if(groupName != null && group != null) {
 
+        ArrayList<IrregularLine> group = groups.getGroup(groupName);
+        if(data != null && group != null) {
+            System.out.println("______*****____TONY groupName"+data);
             SendMessage message = new SendMessage();
-            message.setParseMode("HTML");
-            message.setText("<b>Вопрос " + groupName + ":</b>  "
-                    + group.toString());
+            //message.setParseMode("HTML");
+            StringBuilder allText = new StringBuilder("Группа " + groupName + ":\n");
+            for(int i = 0; i < group.size(); i++) {
+                allText.append(group.get(i).toString());
+            }
+            message.setText(allText.toString());
             message.setChatId(chatId);
             execute(message);
             //todo send Foto!!!
 
-            SendMessage answers = new SendMessage();
-            answers.setParseMode("HTML");
-            answers.setText("<b>Варианты ответа:</b>");
-            answers.setChatId(chatId);
-            answers.setReplyMarkup(keyboard(update));
-            execute(answers);
+//            SendMessage answers = new SendMessage();
+//            answers.setParseMode("HTML");
+//            answers.setText("<b>Варианты ответа:</b>");
+//            answers.setChatId(chatId);
+//            answers.setReplyMarkup(keyboard(update));
+//            execute(answers);
         }
     }
 
     public List<SendMessage> _processCallbackQuery(Update update) {
         List<SendMessage> answerMessages = new ArrayList<>();
         try {
-            Action action = new ActionBuilder(marshaller).buld(update);
+            //Action action = new ActionBuilder(marshaller).buld(update);
             String data = update.getCallbackQuery().getData();
+            System.out.println("Tony ____ name group"+data);
             Long chatId = UpdateUtil.getChatFromUpdate(update).getId();//update.getCallbackQuery().getMessage().getChatId();
-            if (data == null || action == null) {
+            if (data == null) {
                 return null;
             }
 //            if (OPEN_MAIN.equals(action.getName())) {
@@ -266,7 +304,7 @@ public class MyBot extends AbilityBot  /**TelegramLongPollingBot*/ {
 //
 //                sendQuest(update);
 //            }
-            sendGroup(update, action.getName());
+            sendGroup(update, data);
 
         } catch (Exception ex) {
             Logger.getLogger(MyBot.class.getName()).log(Level.SEVERE, null, ex);
@@ -337,54 +375,5 @@ public class MyBot extends AbilityBot  /**TelegramLongPollingBot*/ {
 
     public void setClassifierRepository(ClassifierRepository classifierRepository) {
         this.classifierRepository = (ClassifierRepositoryImpl) classifierRepository;
-    }
-
-    public static void main(String[] args) {
-//        try {
-//            ApiContextInitializer.init();
-//            /* Create the TelegramBotsApi object to register your bots */
-//            TelegramBotsApi botsApi = new TelegramBotsApi();
-//            // Set up Http proxy
-//            DefaultBotOptions botOptions = ApiContext.getInstance(DefaultBotOptions.class);
-//
-//            CredentialsProvider credsProvider = new BasicCredentialsProvider();
-//            credsProvider.setCredentials(
-//                    new AuthScope(PROXY_HOST, PROXY_PORT),
-//                    new UsernamePasswordCredentials(PROXY_USER, PROXY_PASSWORD));
-//            HttpHost httpHost = new HttpHost(PROXY_HOST, PROXY_PORT);
-//
-//            RequestConfig requestConfig = RequestConfig.custom().setProxy(httpHost).setAuthenticationEnabled(true).build();
-//            botOptions.setRequestConfig(requestConfig);
-//            botOptions.setCredentialsProvider(credsProvider);
-//            botOptions.setHttpProxy(httpHost);
-//            // Register your newly created AbilityBot
-//            Bot bot = new Bot(TOKEN, NAME, botOptions);
-//            botsApi.registerBot(bot);
-//        } catch (TelegramApiException e) {
-//            e.printStackTrace();
-//        }
-        try {
-            ApiContextInitializer.init();
-
-            // Create the TelegramBotsApi object to register your bots
-            TelegramBotsApi botsApi = new TelegramBotsApi();
-
-            // Set up Http proxy
-            DefaultBotOptions botOptions = ApiContext.getInstance(DefaultBotOptions.class);
-
-            HttpHost httpHost = new HttpHost(PROXY_HOST1, PROXY_PORT1);
-
-            RequestConfig requestConfig = RequestConfig.custom().setProxy(httpHost).setAuthenticationEnabled(false).build();
-            botOptions.setRequestConfig(requestConfig);
-            botOptions.setHttpProxy(httpHost);
-
-            // Register your newly created AbilityBot
-            MyBot bot = new MyBot(TOKEN, NAME, botOptions);
-
-            botsApi.registerBot(bot);
-
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
     }
 }

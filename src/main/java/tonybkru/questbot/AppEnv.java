@@ -30,13 +30,13 @@ import java.util.logging.Logger;
 public class AppEnv {
 
     public static String ROOT_PATH = "ROOT_PATH";
-    public static String PROXY_HOST = "213.159.122.12";
-    public static Integer PROXY_PORT = 8080;
-    public static String PROXY_USER = "kp";
-    public static String PROXY_PASSWORD = "myPas123";
+    //public static String PROXY_HOST = "213.159.**";//socks proxy!!!!!! A нужно HTTP proxy!!
+    //public static Integer PROXY_PORT = 8080;//socks proxy!!!!!! A нужно HTTP proxy!!
+    //public static String PROXY_USER = "kp";//socks proxy!!!!!! A нужно HTTP proxy!!
+    //public static String PROXY_PASSWORD = "my";//socks proxy!!!!!! A нужно HTTP proxy!!
 
-    public static String PROXY_HOST1 = "128.140.175.97";
-    public static Integer PROXY_PORT1 = 443;
+    public static String PROXY_HOST1 = "94.242.58.142";
+    public static Integer PROXY_PORT1 = 10010;
 
     public static String SERVICE_FILE = "SERVICE_FILE";
     public static String EMPLOYEE_FILE = "EMPLOYEE_FILE";
@@ -162,7 +162,7 @@ public class AppEnv {
         //if (environments.get(PROXY_HOST) != null && environments.get(PROXY_PORT) != null
         //        && environments.get(PROXY_USE) != null && "true".equalsIgnoreCase((String) environments.get(PROXY_USE))) {
             try {
-                HttpHost proxy = new HttpHost(PROXY_HOST, PROXY_PORT);
+                HttpHost proxy = new HttpHost(PROXY_HOST1, PROXY_PORT1);
                 return proxy;
             } catch (NumberFormatException ex) {
                 Logger.getLogger(AppEnv.class.getName()).log(Level.SEVERE, null, ex);

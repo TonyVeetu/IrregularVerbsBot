@@ -65,7 +65,7 @@ import static tonybkru.questbot.AppEnv.*;
  */
 public class MyBot extends TelegramLongPollingBot {
 
-    public static String TOKEN = "****number**:AAGm6YSKvZhqQCxdQBTf7a73pUQDXsWj0cE";
+    public static String TOKEN = "//****number**:AAGm6YSKvZhqQCxdQBTf7a73pUQDXsWj0cE";//****number**
     public static String NAME = "irregulartonybot";
 
     //public static final String OPEN_MAIN = "OM";
@@ -113,6 +113,48 @@ public class MyBot extends TelegramLongPollingBot {
             processCallbackQuery(update);//TODO don't understand!!
         } else if (update.hasInlineQuery()) {
             //processCallbackQuery(update);
+        }
+    }
+
+    public void sendMsg (Message message, String text) {
+        SendMessage sendMessage = new SendMessage();
+        sendMessage.enableMarkdown(true);
+
+        // Создаем клавиуатуру
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+        sendMessage.setReplyMarkup(replyKeyboardMarkup);
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(false);
+
+        // Создаем список строк клавиатуры
+        List<KeyboardRow> keyboard = new ArrayList<>();
+
+        // Первая строчка клавиатуры
+        KeyboardRow keyboardFirstRow = new KeyboardRow();
+        // Добавляем кнопки в первую строчку клавиатуры
+        keyboardFirstRow.add("Команда 1");
+        keyboardFirstRow.add("Команда 2");
+
+        // Вторая строчка клавиатуры
+        KeyboardRow keyboardSecondRow = new KeyboardRow();
+        // Добавляем кнопки во вторую строчку клавиатуры
+        keyboardSecondRow.add("Команда 3");
+        keyboardSecondRow.add("Команда 4");
+
+        // Добавляем все строчки клавиатуры в список
+        keyboard.add(keyboardFirstRow);
+        keyboard.add(keyboardSecondRow);
+        // и устанваливаем этот список нашей клавиатуре
+        replyKeyboardMarkup.setKeyboard(keyboard);
+
+        sendMessage.setChatId(message.getChatId().toString());
+        sendMessage.setReplyToMessageId(message.getMessageId());
+        sendMessage.setText(text);
+        try {
+            sendMessage(sendMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
         }
     }
 
@@ -178,18 +220,21 @@ public class MyBot extends TelegramLongPollingBot {
 //            } catch (TelegramApiException e) {
 //                e.printStackTrace();
 //            }
-            answerMessage = new SendMessage();
-            answerMessage.setChatId(update.getMessage().getChatId());
+            Message messege = update.getMessage();
+            sendMsg(messege, "/see");
 
-            ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();// Create the keyboard (list of keyboard rows)
-            keyboardMarkup.setResizeKeyboard(true);
-            List keyboard = new ArrayList<>();// Create a keyboard row
-            KeyboardRow row = new KeyboardRow();// Set each button, you can also use KeyboardButton objects if you need something else than text
-            row.add("balances");
-            row.add("orders");
-            keyboard.add(row);
-            keyboardMarkup.setKeyboard(keyboard);
-            answerMessage.setReplyMarkup(keyboardMarkup);// Add it to the message
+//            answerMessage = new SendMessage();
+//            answerMessage.setChatId(update.getMessage().getChatId());
+//
+//            ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();// Create the keyboard (list of keyboard rows)
+//            keyboardMarkup.setResizeKeyboard(true);
+//            List keyboard = new ArrayList<>();// Create a keyboard row
+//            KeyboardRow row = new KeyboardRow();// Set each button, you can also use KeyboardButton objects if you need something else than text
+//            row.add("balances");
+//            row.add("orders");
+//            keyboard.add(row);
+//            keyboardMarkup.setKeyboard(keyboard);
+//            answerMessage.setReplyMarkup(keyboardMarkup);// Add it to the message
         } else {
 
         }

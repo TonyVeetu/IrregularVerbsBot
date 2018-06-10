@@ -58,6 +58,7 @@ import java.util.logging.Logger;
 import static org.telegram.abilitybots.api.objects.Locality.ALL;
 import static org.telegram.abilitybots.api.objects.Privacy.PUBLIC;
 import static tonybkru.questbot.AppEnv.*;
+import static tonybkru.questbot.model.GroupsOfWord.findVerb;
 
 /**
  *
@@ -77,11 +78,7 @@ public class MyBot extends TelegramLongPollingBot {
     public static final String FOUR = "4";
     public static final String FIVE = "5";
 
-    //public static final String smiling_face_with_heart_eyes = new String(Character.toChars(0x1F60D));
-    //public static final String winking_face_with_tongue = new String(Character.toChars(0x1F61C));
     public static final String winking_face = new String(Character.toChars(0x1F609));
-    //public static final String bouquet = new String(Character.toChars(0x1F490));
-    //public static final String party_popper = new String(Character.toChars(0x1F389));
 
     private DocumentMarshaller marshaller;
     private QuestStateHolder questStateHolder;
@@ -110,13 +107,13 @@ public class MyBot extends TelegramLongPollingBot {
         if (update.hasMessage() && update.getMessage().hasText()) {
             processCommand(update);
         } else if (update.hasCallbackQuery()) {
-            processCallbackQuery(update);//TODO don't understand!!
+            processCallbackQuery(update);//TODO i don't understand!!
         } else if (update.hasInlineQuery()) {
             //processCallbackQuery(update);
         }
     }
 
-    public void sendMsg (Message message, String text) {
+    public SendMessage sendMsg (Message message, String text) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.enableMarkdown(true);
 
@@ -151,11 +148,7 @@ public class MyBot extends TelegramLongPollingBot {
         sendMessage.setChatId(message.getChatId().toString());
         sendMessage.setReplyToMessageId(message.getMessageId());
         sendMessage.setText(text);
-        try {
-            sendMessage(sendMessage);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
+        return sendMessage;
     }
 
     private void processCallbackQuery(Update update) {
@@ -165,12 +158,49 @@ public class MyBot extends TelegramLongPollingBot {
         if (data == null) {
             return;
         }
-
         answerMessage = _processCallbackQuery(update);
-
         if (answerMessage != null && answerMessage.isEmpty()) {
             answerMessage.clear();
         }
+    }
+
+    public List<SendMessage> _processCallbackQuery(Update update) {
+        List<SendMessage> answerMessages = new ArrayList<>();
+        try {
+            //Action action = new ActionBuilder(marshaller).buld(update);
+            String data = update.getCallbackQuery().getData();
+            System.out.println("Tony ____ name group"+data);
+            Long chatId = UpdateUtil.getChatFromUpdate(update).getId();//update.getCallbackQuery().getMessage().getChatId();
+            if (data == null) {
+                return null;
+            }
+//            if (OPEN_MAIN.equals(action.getName())) {
+//                initQuests(update);
+//
+//                sendQuest(update);
+//            }
+//            if (GET_ANSWER.equals(action.getName())) {
+//                Long answId = Long.parseLong(action.getValue());
+//                ClsAnswer answ = classifierRepository.find(ClsAnswer.class, answId);
+//                SendMessage comment = new SendMessage();
+//                comment.setParseMode("HTML");
+//                comment.setText("<b>Твой ответ:</b> "
+//                        + answ.getAnswerText()
+//                        + "\n<b>Комментарий к ответу:</b> "
+//                        + answ.getAnswerComment()
+//                        + "\n");
+//                comment.setChatId(chatId);
+//                execute(comment);
+//
+//                sendQuest(update);
+//            }
+            sendGroup(update, data);
+
+        } catch (Exception ex) {
+            Logger.getLogger(MyBot.class.getName()).log(Level.SEVERE, null, ex);
+            answerMessages.add(errorMessage());
+        }
+        return answerMessages;
     }
 
     private void processCommand(Update update) {
@@ -194,14 +224,17 @@ public class MyBot extends TelegramLongPollingBot {
 
     public SendMessage _processCommand(Update update) {
         SendMessage answerMessage = null;
+        Message inputMassage = update.getMessage();
         String text = update.getMessage().getText();
+
         System.out.println("Tony catch this:___  "+text);
+
         if ("/start".equals(text)) {
             answerMessage = new SendMessage();
             //answerMessage.setText("*Title:* Алёнка, твой курс будет ЛУЧШИМ на всём белом свете!! Но не сразу!!!\n");
             Message messege = update.getMessage();
             User user = messege.getFrom();
-            answerMessage.setText("Привет, "+ user.getUserName()+"! Все неправильные глаголы разбиты на группы! Введи номер группы, с которой ты хочешь начать!");
+            answerMessage.setText("How is it doing on, "+ user.getUserName()+"? Все неправильные глаголы разбиты на группы! Введи номер группы, с которой ты хочешь начать!");
             //answerMessage.setParseMode("HTML");
             answerMessage.setChatId(update.getMessage().getChatId());//TODO вернуть кнопки 1, 2, 3 ... соответствующие группе глаголов!!
 
@@ -223,19 +256,14 @@ public class MyBot extends TelegramLongPollingBot {
             Message messege = update.getMessage();
             sendMsg(messege, "/see");
 
-//            answerMessage = new SendMessage();
-//            answerMessage.setChatId(update.getMessage().getChatId());
-//
-//            ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();// Create the keyboard (list of keyboard rows)
-//            keyboardMarkup.setResizeKeyboard(true);
-//            List keyboard = new ArrayList<>();// Create a keyboard row
-//            KeyboardRow row = new KeyboardRow();// Set each button, you can also use KeyboardButton objects if you need something else than text
-//            row.add("balances");
-//            row.add("orders");
-//            keyboard.add(row);
-//            keyboardMarkup.setKeyboard(keyboard);
-//            answerMessage.setReplyMarkup(keyboardMarkup);// Add it to the message
-        } else {
+        } else if ("/find".equals(text)){
+            //TODO find 1. all form for verb + translate!
+            //TODO 2.photo
+            //TODO 3.sound
+            System.out.println(inputMassage);
+            findVerb();
+        }
+        else {
 
         }
         return answerMessage;
@@ -297,11 +325,11 @@ public class MyBot extends TelegramLongPollingBot {
         GroupsOfWord groups = new GroupsOfWord();
 
         ArrayList<IrregularLine> group = groups.getGroup(groupName);
+        SendMessage message = new SendMessage();
         if(data != null && group != null) {
             System.out.println("______*****____TONY groupName"+data);
-            SendMessage message = new SendMessage();
-            //message.setParseMode("HTML");
-            StringBuilder allText = new StringBuilder("Группа " + groupName + ":\n");
+
+            StringBuilder allText = new StringBuilder("Group " + groupName + ":\n");
             for(int i = 0; i < group.size(); i++) {
                 allText.append(group.get(i).toString());
             }
@@ -316,47 +344,12 @@ public class MyBot extends TelegramLongPollingBot {
 //            answers.setChatId(chatId);
 //            answers.setReplyMarkup(keyboard(update));
 //            execute(answers);
+        } else {
+            message.setText("Sorry!");
         }
     }
 
-    public List<SendMessage> _processCallbackQuery(Update update) {
-        List<SendMessage> answerMessages = new ArrayList<>();
-        try {
-            //Action action = new ActionBuilder(marshaller).buld(update);
-            String data = update.getCallbackQuery().getData();
-            System.out.println("Tony ____ name group"+data);
-            Long chatId = UpdateUtil.getChatFromUpdate(update).getId();//update.getCallbackQuery().getMessage().getChatId();
-            if (data == null) {
-                return null;
-            }
-//            if (OPEN_MAIN.equals(action.getName())) {
-//                initQuests(update);
-//
-//                sendQuest(update);
-//            }
-//            if (GET_ANSWER.equals(action.getName())) {
-//                Long answId = Long.parseLong(action.getValue());
-//                ClsAnswer answ = classifierRepository.find(ClsAnswer.class, answId);
-//                SendMessage comment = new SendMessage();
-//                comment.setParseMode("HTML");
-//                comment.setText("<b>Твой ответ:</b> "
-//                        + answ.getAnswerText()
-//                        + "\n<b>Комментарий к ответу:</b> "
-//                        + answ.getAnswerComment()
-//                        + "\n");
-//                comment.setChatId(chatId);
-//                execute(comment);
-//
-//                sendQuest(update);
-//            }
-            sendGroup(update, data);
 
-        } catch (Exception ex) {
-            Logger.getLogger(MyBot.class.getName()).log(Level.SEVERE, null, ex);
-            answerMessages.add(errorMessage());
-        }
-        return answerMessages;
-    }
 
     public SendMessage errorMessage() {
         SendMessage answerMessage = new SendMessage();

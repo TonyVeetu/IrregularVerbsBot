@@ -43,9 +43,10 @@ public class Main {
             MyBot bot = null;
             HttpHost proxy = AppEnv.getContext().getProxy();
             if (proxy == null) {
-                System.out.println("_______________TONYYYYYYYYYYY_____________");
+
                 bot = new MyBot();
             } else {
+                System.out.println("_____TONYYYYYYYYYYY_____USE______PROXY______");
                 DefaultBotOptions instance = ApiContext
                         .getInstance(DefaultBotOptions.class);
                 RequestConfig rc = RequestConfig.custom()

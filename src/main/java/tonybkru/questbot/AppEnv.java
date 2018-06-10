@@ -35,8 +35,8 @@ public class AppEnv {
     //public static String PROXY_USER = "kp";//socks proxy!!!!!! A нужно HTTP proxy!!
     //public static String PROXY_PASSWORD = "my";//socks proxy!!!!!! A нужно HTTP proxy!!
 
-    public static String PROXY_HOST1 = "94.242.58.142";
-    public static Integer PROXY_PORT1 = 10010;
+    public static String PROXY_HOST1 = "209.141.56.170";
+    public static Integer PROXY_PORT1 = 9090;
 
     public static String SERVICE_FILE = "SERVICE_FILE";
     public static String EMPLOYEE_FILE = "EMPLOYEE_FILE";

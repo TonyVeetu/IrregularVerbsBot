@@ -98,7 +98,6 @@ public class GroupsOfWord {
         nine.add(new IrregularLine("Wake - woke - woken\n"));
 
         //nine.add(new IrregularLine("Beat - beat - beaten\n"));
-
         ten.add(new IrregularLine("_**__Crazy_Verbs__**_\n"));
         ten.add(new IrregularLine("go - went - gone\n"));
         ten.add(new IrregularLine("do - did - done\n"));

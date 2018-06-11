@@ -27,18 +27,14 @@ public class Main {
     }
 
     public static void main(String[] args) {
-
         Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Бот. Начало работы");
-
         if (args.length > 0) {
             AppEnv.getContext(args[0].replaceFirst("-", ""));//.init(args[0]);
         } else {
             AppEnv.getContext();//.init();
         }
-
         ApiContextInitializer.init();
         TelegramBotsApi botsApi = new TelegramBotsApi();
-
         Runnable r = () -> {
             MyBot bot = null;
             HttpHost proxy = AppEnv.getContext().getProxy();
@@ -57,10 +53,7 @@ public class Main {
 
             try {
                 botsApi.registerBot(bot);
-                bot.setClassifierRepository(AppEnv.getContext().getClassifierRepository());
                 bot.setMarshaller(AppEnv.getContext().getMarschaller());
-                bot.setQuestStateHolder(AppEnv.getContext().getQuestStateHolder());
-                //AppEnv.getContext().getMenuManager().setBot(bot);
             } catch (TelegramApiRequestException ex) {
                 Logger.getLogger(Main.class.getName())
                         .log(Level.SEVERE, null, ex);

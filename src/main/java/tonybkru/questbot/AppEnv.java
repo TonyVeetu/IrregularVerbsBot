@@ -29,23 +29,9 @@ import java.util.logging.Logger;
  */
 public class AppEnv {
 
-    public static String ROOT_PATH = "ROOT_PATH";
-    //public static String PROXY_HOST = "213.159.**";//socks proxy!!!!!! A нужно HTTP proxy!!
-    //public static Integer PROXY_PORT = 8080;//socks proxy!!!!!! A нужно HTTP proxy!!
-    //public static String PROXY_USER = "kp";//socks proxy!!!!!! A нужно HTTP proxy!!
-    //public static String PROXY_PASSWORD = "my";//socks proxy!!!!!! A нужно HTTP proxy!!
+    public static String PROXY_HOST1 = "42.104.84.106";
+    public static Integer PROXY_PORT1 = 8080;
 
-    public static String PROXY_HOST1 = "209.141.56.170";
-    public static Integer PROXY_PORT1 = 9090;
-
-    public static String SERVICE_FILE = "SERVICE_FILE";
-    public static String EMPLOYEE_FILE = "EMPLOYEE_FILE";
-
-    //    PROPERTIES:
-    //    ROOT_PATH=absolute path
-    //    PROXY_USE=false
-    //    TOKEN=bot token
-    //    USERNAME=bot user name
     private Map environments = new HashMap();
 
     private static AppEnv CONTEXT;
@@ -152,10 +138,6 @@ public class AppEnv {
             CONTEXT.init();
         }
         return CONTEXT;
-    }
-
-    public String getRootPath() {
-        return (String) environments.get(ROOT_PATH);
     }
 
     public HttpHost getProxy() {

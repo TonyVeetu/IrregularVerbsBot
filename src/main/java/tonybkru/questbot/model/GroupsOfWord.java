@@ -37,57 +37,73 @@ public class GroupsOfWord {
 
     }
     private void initGroups() {
-        one.add(new IrregularLine("Drink - drank - ?\n"));
-        one.add(new IrregularLine("Swim - swam - ?\n"));
-        one.add(new IrregularLine("Sit - sat - ?\n"));
-        one.add(new IrregularLine("Begin - began - ?\n"));
-        one.add(new IrregularLine("Ring - rang - ?\n"));
+        one.add(new IrregularLine("Drink - drank - drunk\n"));
+        one.add(new IrregularLine("Swim - swam - swum\n"));
+        one.add(new IrregularLine("Sit - sat - sat\n"));
+        one.add(new IrregularLine("Begin - began - begun\n"));
+        one.add(new IrregularLine("Ring - rang - rung\n"));
 
-        two.add(new IrregularLine("Buy - bought - ?\n"));
-        two.add(new IrregularLine("Fight - fought - ?\n"));
-        two.add(new IrregularLine("Think - thought - ?\n"));
-        two.add(new IrregularLine("Bring - brought - ?\n"));
+        two.add(new IrregularLine("Buy - bought - bought\n"));
+        two.add(new IrregularLine("Fight - fought - fought\n"));
+        two.add(new IrregularLine("Think - thought - thought\n"));
+        two.add(new IrregularLine("Bring - brought - brought\n"));
+        two.add(new IrregularLine("Catch - caught - caught\n"));
+        two.add(new IrregularLine("Teach - taught - taught\n"));
 
-        three.add(new IrregularLine("Send - sent - ?\n"));
-        three.add(new IrregularLine("Build - built - ?\n"));
-        three.add(new IrregularLine("Spend - spent - ?\n"));
+        three.add(new IrregularLine("Send - sent - sent\n"));
+        three.add(new IrregularLine("Build - built - built\n"));
+        three.add(new IrregularLine("Spend - spent - spent\n"));
+        three.add(new IrregularLine("Bend - bent - bent\n"));
+        three.add(new IrregularLine("Lend - lent - lent\n"));
 
-        four.add(new IrregularLine("Know - knew - ?\n"));
-        four.add(new IrregularLine("Grow - grew - ?\n"));
-        four.add(new IrregularLine("Throw - threw - ?\n"));
+        four.add(new IrregularLine("Know - knew - known\n"));
+        four.add(new IrregularLine("Grow - grew - grown\n"));
+        four.add(new IrregularLine("Throw - threw - thrown\n"));
+        four.add(new IrregularLine("Throw - threw - thrown\n"));
+        four.add(new IrregularLine("Show - showed - shown\n"));
+        four.add(new IrregularLine("Draw - drew - drawn\n"));
+        four.add(new IrregularLine("Blow - blew - blown\n"));
+        four.add(new IrregularLine("Fly - flew - flown\n"));
 
-        five.add(new IrregularLine("Meet - met - ?\n"));
-        five.add(new IrregularLine("Lead - led - ?\n"));
-        five.add(new IrregularLine("Feed - fed - ?\n"));
-        five.add(new IrregularLine("Bleed - bled - ?\n"));
-        five.add(new IrregularLine("but  READ - READ - v\n"));
+        five.add(new IrregularLine("Meet - met - met\n"));
+        five.add(new IrregularLine("Lead - led - led\n"));
+        five.add(new IrregularLine("Feed - fed - fed\n"));
+        five.add(new IrregularLine("Bleed - bled - bled\n"));
+        five.add(new IrregularLine("but:  READ - READ - READ\n"));
 
-        six.add(new IrregularLine("Sleep - slept - ?\n"));
-        six.add(new IrregularLine("Keep - kept - ?\n"));
-        six.add(new IrregularLine("Weep - wept - ?\n"));
-        six.add(new IrregularLine("Sweep - swept - ?\n"));
+        six.add(new IrregularLine("Sleep - slept - slept\n"));
+        six.add(new IrregularLine("Keep - kept - kept\n"));
+        six.add(new IrregularLine("Weep - wept - wept\n"));
+        six.add(new IrregularLine("Sweep - swept - swept\n"));
+        six.add(new IrregularLine("Kneel - knelt - knelt\n"));
 
-        seven.add(new IrregularLine("Cut - cut - ?\n"));
-        seven.add(new IrregularLine("Put - put - ?\n"));
-        seven.add(new IrregularLine("Let - let - ?\n"));
-        seven.add(new IrregularLine("Set - set - ?\n"));
-        seven.add(new IrregularLine("Hit - hit - ?\n"));
-        seven.add(new IrregularLine("Rid - rid - ?\n"));
-        seven.add(new IrregularLine("Cost - cost - ?\n"));
+        seven.add(new IrregularLine("Cut - cut - cut\n"));
+        seven.add(new IrregularLine("Put - put - put\n"));
+        seven.add(new IrregularLine("Let - let - let\n"));
+        seven.add(new IrregularLine("Set - set - set\n"));
+        seven.add(new IrregularLine("Hit - hit - hit\n"));
+        seven.add(new IrregularLine("Rid - rid - rid\n"));
+        seven.add(new IrregularLine("Cost - cost - cost\n"));
+        seven.add(new IrregularLine("Shut - shut - shut\n"));
+        seven.add(new IrregularLine("Burst - burst - burst\n"));
 
-        eight.add(new IrregularLine("Wear - wore - ?\n"));
-        eight.add(new IrregularLine("Tear - tore - ?\n"));
-        eight.add(new IrregularLine("Swear - swore - ?\n"));
+        eight.add(new IrregularLine("Wear - wore - worn\n"));
+        eight.add(new IrregularLine("Tear - tore - torn\n"));
+        eight.add(new IrregularLine("Swear - swore - sworn\n"));
+        
+        nine.add(new IrregularLine("Speak - spoke - spoken\n"));
+        nine.add(new IrregularLine("Break - broke - broken\n"));
+        nine.add(new IrregularLine("Steal - stole - stolen\n"));
+        nine.add(new IrregularLine("Freeze - froze - frozen\n"));
+        nine.add(new IrregularLine("Wake - woke - woken\n"));
 
-        nine.add(new IrregularLine("Speak - spoke - ?\n"));
-        nine.add(new IrregularLine("Break - broke - ?\n"));
-        nine.add(new IrregularLine("Steal - stole - ?\n"));
+        //nine.add(new IrregularLine("Beat - beat - beaten\n"));
 
+        ten.add(new IrregularLine("_**__Crazy_Verbs__**_\n"));
         ten.add(new IrregularLine("go - went - gone\n"));
         ten.add(new IrregularLine("do - did - done\n"));
         ten.add(new IrregularLine("see - saw - seen\n"));
-        ten.add(new IrregularLine("eat - ate - ?\n"));
-        //TODO make three worm!!
+        ten.add(new IrregularLine("eat - ate - eaten\n"));
     }
 
     public ArrayList<IrregularLine> getGroup(String name) {

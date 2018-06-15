@@ -10,6 +10,9 @@
 
   <name>IrregularVerbsBot</name>
   <url>https://habr.com/post/346112/</url>
+  <!--<url>https://habr.com/post/257223/</url> -->
+  <!--https://habr.com/post/335490/ -->
+  <!--https://habr.com/post/342506/-->
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

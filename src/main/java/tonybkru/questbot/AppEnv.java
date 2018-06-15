@@ -29,8 +29,8 @@ import java.util.logging.Logger;
  */
 public class AppEnv {
 
-    public static String PROXY_HOST1 = "42.104.84.106";
-    public static Integer PROXY_PORT1 = 8080;
+    public static String PROXY_HOST1 = "177.66.119.21";
+    public static Integer PROXY_PORT1 = 3128;
 
     private Map environments = new HashMap();
 
